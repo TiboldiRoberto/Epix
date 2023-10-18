@@ -1,10 +1,8 @@
 import Vapor
 
 func routes(_ app: Application) throws {
-    app.get { req async in
-        "It works!"
-    }
-
+    try app.register(collection: RoutesController())
+    
     app.get("hello") { req async -> String in
         "Hello, world!"
     }
@@ -18,7 +16,7 @@ func routes(_ app: Application) throws {
                 // Read the contents of the file
                 if let data = FileManager.default.contents(atPath: filePath) {
                     // Create a Vapor Response with the file's data and set the appropriate content type
-                    var response = Response(status: .ok)
+                    let response = Response(status: .ok)
                     response.headers.add(name: "Content-Type", value: "application/json")
                     response.body = .init(data: data)
                     return req.eventLoop.makeSucceededFuture(response)
